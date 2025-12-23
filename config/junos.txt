@@ -1,0 +1,8 @@
+set system services ssh
+set system services ssh root-login allow
+set system services netconf ssh
+
+set system login user netdevops class super-user authentication plain-text-password
+#### DIGITE A SENHA ####
+
+commit

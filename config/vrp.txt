@@ -1,0 +1,31 @@
+#
+system-view
+#
+stelnet server enable
+stelnet ipv4 server enable
+#
+telnet server enable
+#
+netconf
+protocol inbound ssh ipv4 port 830
+quit
+#
+aaa
+local-user netdevops password irreversible-cipher #### DIGITE SUA SENHA ####
+local-user netdevops level 3
+local-user netdevops service-type ssh telnet
+local-user netdevops state active
+quit
+#
+user-interface vty 0 4
+authentication-mode aaa
+protocol inbound all
+quit
+#
+rsa local-key-pair create
+Y
+#
+snetconf ipv4 server enable
+#
+commit
+#
