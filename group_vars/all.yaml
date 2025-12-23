@@ -1,7 +1,7 @@
 ---
 
 # (Mutable)
-cliente_name: AUTONETOPS
+cliente_name: NETDEVOPS
 
 # Internal Vlan (Mutable)
 vlan_id_internal: 200
@@ -26,7 +26,7 @@ vlan_id_transit_l3_ipaddr: 100.64.80.1
 ########################################################
 
 # VRF NAME (Mutable)
-vrf_name: AUTONETOPS
+vrf_name: NETDEVOPS
 
 # Endereço deve ser o IP configurado no FW BORD (Mutable)
 vrf_next_hop: 100.64.80.2
