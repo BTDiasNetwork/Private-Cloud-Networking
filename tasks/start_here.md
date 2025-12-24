@@ -5,10 +5,3 @@
  2. r2
     - DNS: clab-ano__huawei-r2
     - IP: 172.20.20.12
-## Acessos
- 
-* Usuario:  admin
-* Senha:    autonetops
-
-### Exemplo
-ssh admin@ROUTER_NAME
