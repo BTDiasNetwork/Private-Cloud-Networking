@@ -1,0 +1,32 @@
+name: huawei-topology
+topology:
+  defaults:
+    kind: huawei_vrp
+    startup-config: configs/huawei/__clabNodeName__.cfg
+
+  nodes:
+    core01:
+      mgmt-ipv4: 172.20.20.11
+      image: ghcr.io/autonetops/autonetops_labs/huawei_ce12800:latest
+      startup-config: configs/huawei/core01.cfg
+    dst1:
+      mgmt-ipv4: 172.20.20.12
+      image: ghcr.io/autonetops/autonetops_labs/huawei_ce12800:latest
+      startup-config: configs/huawei/dst1.cfg
+    dst2:
+      mgmt-ipv4: 172.20.20.13
+      image: ghcr.io/autonetops/autonetops_labs/huawei_ce12800:latest
+      startup-config: configs/huawei/dst2.cfg
+    dst3:
+      mgmt-ipv4: 172.20.20.14
+      image: ghcr.io/autonetops/autonetops_labs/huawei_ce12800:latest
+      startup-config: configs/huawei/dst3.cfg
+    dst4:
+      mgmt-ipv4: 172.20.20.15
+      image: ghcr.io/autonetops/autonetops_labs/huawei_ce12800:latest
+      startup-config: configs/huawei/dst4.cfg
+  links:
+    - endpoints: ["core01:eth1", "dst1:eth1"]
+    - endpoints: ["core01:eth2", "dst2:eth1"]
+    - endpoints: ["core01:eth3", "dst3:eth1"]
+    - endpoints: ["core01:eth4", "dst4:eth1"]
