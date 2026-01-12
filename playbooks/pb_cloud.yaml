@@ -51,7 +51,7 @@
       state: present
     tags: vrp
     when: 
-      - inventory_hostname == 'SWCOR-11313-LAB'
+      - inventory_hostname == 'SWCOR-LAB'
 
   # Config VRF Cliente com RD, RT-EXPORT - Format vrf_attributes: "1:{{ vlan_id_internal }}"
   - name: Config VRF, AF1 Unicast, RD e RT-EXPORT
@@ -65,7 +65,7 @@
       state: present
     tags: vrp
     when: 
-      - inventory_hostname == 'SWCOR-11313-LAB'
+      - inventory_hostname == 'SWCOR-LAB'
 
 # Config VRF Cliente com RD, RT-IMPORT 1:1900 (Redes Monitoramento etc)
   - name: Config VRF, AFI-1 Unicast, RD e RT-IMPORT 1:1900
@@ -78,7 +78,7 @@
       vpn_target_state: present 
     tags: vrp
     when: 
-      - inventory_hostname == 'SWCOR-11313-LAB'
+      - inventory_hostname == 'SWCOR-LAB'
 
 # Criando SVI [Internal VLAN]
   - name: Criando SVI [Internal VLAN]
@@ -87,7 +87,7 @@
       state: present
     tags: vrp
     when: 
-      - inventory_hostname == 'SWCOR-11313-LAB'
+      - inventory_hostname == 'SWCOR-LAB'
 
 # Alocando SVI a VRF [Internal VLAN]
   - name: Alocando SVI a VRF [Internal VLAN]
@@ -97,7 +97,7 @@
       state: present
     tags: vrp
     when: 
-      - inventory_hostname == 'SWCOR-11313-LAB'
+      - inventory_hostname == 'SWCOR-LAB'
 
 # Endereçando SVI [Internal VLAN]
   - name: Endereçando SVI [Internal VLAN]
@@ -109,7 +109,7 @@
       mask: 24
     tags: vrp
     when: 
-      - inventory_hostname == 'SWCOR-11313-LAB'
+      - inventory_hostname == 'SWCOR-LAB'
 
 # Criando SVI [Transit VLAN]
   - name: Criando SVI [Transit VLAN]
@@ -118,7 +118,7 @@
       state: present
     tags: vrp
     when: 
-      - inventory_hostname == 'SWCOR-11313-LAB'
+      - inventory_hostname == 'SWCOR-LAB'
 
 # Alocando SVI a VRF [Transit VLAN]
   - name: Alocando SVI a VRF [Transit VLAN]
@@ -140,7 +140,7 @@
       mask: 30
     tags: vrp
     when: 
-      - inventory_hostname == 'SWCOR-11313-LAB'
+      - inventory_hostname == 'SWCOR-LAB'
 
 # NEXT_HOP deve ser o firewall de borda do DC
   - name: Criando Rota Estatica Default VRF para FW-BORD DC
@@ -155,7 +155,7 @@
       state: present
     tags: vrp
     when: 
-      - inventory_hostname == 'SWCOR-11313-LAB'
+      - inventory_hostname == 'SWCOR-LAB'
 
 # Módulos NETCONF não suportam a intent, necessário utilizar módulo CLI
   - name: Redistribuir rede direct no BGP [VRF CLIENTE] (única task usando CLI)
@@ -170,7 +170,7 @@
         - import-route direct route-policy RP_DENY-CGNAT_DC
     tags: vrp
     when: 
-      - inventory_hostname == 'SWCOR-11313-LAB'
+      - inventory_hostname == 'SWCOR-LAB'
 
 #  [Serve como base inicial para a próxima task (Config VRF FW-BORD CLIENTES)]
   - name: Create VRF [Temporario]
@@ -180,7 +180,7 @@
       state: present
     tags: vrp
     when: 
-      - inventory_hostname == 'SWCOR-11313-LAB'
+      - inventory_hostname == 'SWCOR-LAB'
 
 #  [Depende da task acima inicialmente]
   - name: Config VRF FW-BORD CLIENTES
@@ -193,5 +193,6 @@
       vpn_target_state: present 
     tags: vrp
     when: 
-      - inventory_hostname == 'SWCOR-11313-LAB'
+      - inventory_hostname == 'SWCOR-LAB'
+
 
