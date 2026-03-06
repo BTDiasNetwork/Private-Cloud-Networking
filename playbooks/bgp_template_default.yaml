@@ -1,0 +1,267 @@
+---
+- name: Router RTBOR-13827-001 - Template Default | Dinamica - Peer 10.66.13.33
+  hosts: R38-lab
+  gather_facts: no
+
+  tasks:
+
+    - name: R38 TEMPLATE DEFAULT | Peer 10.66.13.33 ROUTER_FILTER_IN
+      community.network.ce_config:
+        lines:
+        - #
+        - xpl route-filter ROUTEFILTER_BGP_DINAMICA-2_IPv4_01_IN
+        - !ROUTE FILTER FOR DINAMICA IPv4 INPUT ROUTER 2
+        - if (ip route-destination in PREFIX_BOGON_IPv4 or ip route-destination in PREFIX_PERMIT_CIDR_ISH_IPv4 or as-path in ASPATH_BGP_BOGGON_ASN) then
+          - refuse
+        - elseif (as-path in ASPATH_BGP_ASN28173 and ip route-destination in {0.0.0.0 0 le 24}) then
+          - apply local-preference 550
+          - apply extcommunity rt COMMUNITY_MARK_BGP_ASN28173 additive
+          - approve
+        - elseif (ip route-destination in {0.0.0.0 0 le 24}) then
+          - apply local-preference 350
+          - approve
+        - else
+          - refuse
+        - endif
+        - end-filter
+        - #
+        - return
+      when:
+      - inventory_hostname == 'R38-lab'
+
+    - name: R38 TEMPLATE DEFAULT | Peer 10.66.13.33 ROUTER_FILTER_OUT
+      community.network.ce_config:
+        lines:
+        - #
+        - xpl route-filter ROUTEFILTER_BGP_DINAMICA-2_IPv4_01_OUT
+        - !ROUTE FILTER FOR DINAMICA IPv4 OUTPUT ROUTER 2
+        - if (extcommunity rt matches-any COMMUNITY_SAGE_ADV_NUVEM) then
+          - refuse
+        - elseif (ip route-destination in PREFIX_PERMIT_CIDR_ISH_TO_DINAMICA-2_IPv4 and ip route-destination in {0.0.0.0 0 le 24}) then
+          - apply med 500
+          - approve
+        - elseif (ip route-destination in PREFIX_PERMIT_CIDR_ISH_TO_DINAMICA-2_PREPEND_IPv4 and ip route-destination in {0.0.0.0 0 le 24}) then
+          - apply med 500
+          - apply as-path 52797 5 additive
+          - approve
+        - else
+          - refuse
+        - endif
+        - end-filter
+        - #
+        - return
+      when:
+      - inventory_hostname == 'R38-lab'
+
+    - name: R38 TEMPLATE DEFAULT | Peer 10.66.13.33 PREFIX_PERMIT_CIDR_ISH_TO_DINAMICA-2_IPv4
+      community.network.ce_config:
+        lines:
+        - #
+        - xpl ip-prefix-list PREFIX_PERMIT_CIDR_ISH_TO_DINAMICA-2_IPv4
+        - !PREFIX LIST FOR PERMIT IPv4 ISH ADV DINAMICA ROUTER 2
+        - 177.39.232.0 21,
+        - 177.39.232.0 24,
+        - 177.39.233.0 24,
+        - 177.39.234.0 24,
+        - 177.39.235.0 24,
+        - 177.39.236.0 24,
+        - 177.39.237.0 24,
+        - 177.39.239.0 24
+        - end-list
+        - #
+        - return
+      when:
+      - inventory_hostname == 'R38-lab'
+
+    - name: R38 TEMPLATE DEFAULT | Peer 10.66.13.33 PREFIX_PERMIT_CIDR_ISH_TO_DINAMICA-2_PREPEND_IPv4
+      community.network.ce_config:
+        lines:
+        - #
+        - xpl ip-prefix-list PREFIX_PERMIT_CIDR_ISH_TO_DINAMICA-2_PREPEND_IPv4
+        - !PREFIX LIST FOR PERMIT IPv4 ISH ADV DINAMICA ROUTER 2
+        - 177.39.238.0 24
+        - end-list
+        - #
+        - return
+      when:
+      - inventory_hostname == 'R38-lab'
+
+---
+- name: Router RTBOR-13827-001 - Template Default | Dinamica - Peer 10.66.12.25
+  hosts: R38-lab
+  gather_facts: no
+
+  tasks:
+
+    - name: R38 TEMPLATE DEFAULT | Peer 10.66.12.25 ROUTER_FILTER_IN
+      community.network.ce_config:
+        lines:
+        - #
+        - xpl route-filter ROUTEFILTER_BGP_DINAMICA_IPv4_01_IN
+        - !ROUTE FILTER FOR DINAMICA IPv4 INPUT
+        - if (ip route-destination in PREFIX_BOGON_IPv4 or ip route-destination in PREFIX_PERMIT_CIDR_ISH_IPv4 or as-path in ASPATH_BGP_BOGGON_ASN) then
+          - refuse
+        - elseif (as-path in ASPATH_BGP_ASN28173 and ip route-destination in {0.0.0.0 0 le 24}) then
+          - apply local-preference 500
+          - apply extcommunity rt COMMUNITY_MARK_BGP_ASN28173 additive
+          - approve
+        - elseif (ip route-destination in {0.0.0.0 0 le 24}) then
+          - apply local-preference 300
+          - approve
+        - else
+          - refuse
+        - endif
+        - end-filter
+        - #
+        - return
+      when:
+      - inventory_hostname == 'R38-lab'
+
+    - name: R38 TEMPLATE DEFAULT | Peer 10.66.12.25 ROUTER_FILTER_OUT
+      community.network.ce_config:
+        lines:
+        - #
+        - xpl route-filter ROUTEFILTER_BGP_DINAMICA_IPv4_01_OUT
+        - !ROUTE FILTER FOR DINAMICA IPv4 OUTPUT
+        - if (extcommunity rt matches-any COMMUNITY_SAGE_ADV_NUVEM) then
+          - refuse
+        - elseif (ip route-destination in PREFIX_PERMIT_CIDR_ISH_TO_DINAMICA_IPv4 and ip route-destination in {0.0.0.0 0 le 24}) then
+          - apply med 300
+          - approve
+        - elseif (ip route-destination in PREFIX_PERMIT_CIDR_ISH_TO_DINAMICA_PREPEND_IPv4 and ip route-destination in {0.0.0.0 0 le 24}) then
+          - apply med 300
+          - apply as-path 52797 5 additive
+          - approve
+        - else
+          - refuse
+        - endif
+        - end-filter
+        - #
+        - return
+      when:
+      - inventory_hostname == 'R38-lab'
+
+    - name: R38 TEMPLATE DEFAULT | Peer 10.66.12.25 PREFIX_PERMIT_CIDR_ISH_TO_DINAMICA_IPv4
+      community.network.ce_config:
+        lines:
+        - #
+        - xpl ip-prefix-list PREFIX_PERMIT_CIDR_ISH_TO_DINAMICA_IPv4
+        - !PREFIX LIST FOR PERMIT IPv4 ISH ADV DINAMICA ROUTER 2
+        - 177.39.232.0 21,
+        - 177.39.232.0 24,
+        - 177.39.233.0 24,
+        - 177.39.234.0 24,
+        - 177.39.235.0 24,
+        - 177.39.236.0 24,
+        - 177.39.237.0 24,
+        - 177.39.239.0 24
+        - end-list
+        - #
+        - return
+      when:
+      - inventory_hostname == 'R38-lab'
+
+    - name: R38 TEMPLATE DEFAULT | Peer 10.66.12.25 PREFIX_PERMIT_CIDR_ISH_TO_DINAMICA_PREPEND_IPv4
+      community.network.ce_config:
+        lines:
+        - #
+        - xpl ip-prefix-list PREFIX_PERMIT_CIDR_ISH_TO_DINAMICA_PREPEND_IPv4
+        - !PREFIX LIST FOR PERMIT IPv4 ISH ADV DINAMICA ROUTER 2
+        - 177.39.238.0 24
+        - end-list
+        - #
+        - return
+      when:
+      - inventory_hostname == 'R38-lab'
+
+---
+- name: Router RTBOR-13727-001 - Template Default | Alterna - Peer 177.53.168.245
+  hosts: R37-lab
+  gather_facts: no
+
+  tasks:
+
+    - name: R37 TEMPLATE DEFAULT | Peer 177.53.168.245 ROUTER_FILTER_IN
+      community.network.ce_config:
+        lines:
+        - #
+        - xpl route-filter ROUTEFILTER_BGP_ALTERNA_IPv4_01_IN
+        - !ROUTE FILTER FOR ALTERNA IPv4 INPUT
+        - if (ip route-destination in PREFIX_BOGON_IPv4 or ip route-destination in PREFIX_PERMIT_CIDR_ISH_IPv4 or as-path in ASPATH_BGP_BOGGON_ASN) then
+          - refuse
+        - elseif (as-path in ASPATH_BGP_ASN4230) then
+          - apply local-preference 125
+          - approve
+        - elseif (as-path in ASPATH_BGP_ASN262474 and ip route-destination in {0.0.0.0 0 le 24}) then
+          - apply local-preference 550
+          - apply extcommunity rt COMMUNITY_MARK_BGP_ASN262474 additive
+          - approve
+        - elseif (ip route-destination in {0.0.0.0 0 le 24}) then
+          - apply local-preference 250
+          - apply extcommunity rt COMMUNITY_MARK_BGP_ASN262474 additive
+          - approve
+        - else
+          - refuse
+        - endif
+        - end-filter
+        - #
+        - return
+      when:
+      - inventory_hostname == 'R37-lab'
+
+    - name: R37 TEMPLATE DEFAULT | Peer 177.53.168.245 ROUTER_FILTER_OUT
+      community.network.ce_config:
+        lines:
+        - #
+        - xpl route-filter ROUTEFILTER_BGP_ALTERNA_IPv4_01_OUT
+        - !ROUTE FILTER FOR ALTERNA IPv4 OUTPUT
+        - if (extcommunity rt matches-any COMMUNITY_SAGE_ADV_NUVEM) then
+          - refuse
+        - elseif (ip route-destination in PREFIX_PERMIT_CIDR_ISH_IPv4 and ip route-destination in {0.0.0.0 0 le 24}) then
+          - apply med 500
+          - approve
+        - elseif (ip route-destination in PREFIX_PERMIT_CIDR_ISH_PREPEND_IPv4 and ip route-destination in {0.0.0.0 0 le 24}) then
+          - apply med 500
+          - apply as-path 52797 5 additive
+          - approve
+        - else
+          - refuse
+        - endif
+        - end-filter
+        - #
+        - return
+      when:
+      - inventory_hostname == 'R37-lab'
+
+    - name: R37 TEMPLATE DEFAULT | Peer 177.53.168.245 PREFIX_PERMIT_CIDR_ISH_IPv4
+      community.network.ce_config:
+        lines:
+        - #
+        - xpl ip-prefix-list PREFIX_PERMIT_CIDR_ISH_IPv4
+        - !PREFIX LIST FOR PERMIT IPv4 ISH
+        - 177.39.232.0 21,
+        - 177.39.238.0 24
+        - end-list
+        - #
+        - return
+      when:
+      - inventory_hostname == 'R37-lab'
+
+    - name: R37 TEMPLATE DEFAULT | Peer 177.53.168.245 PREFIX_PERMIT_CIDR_ISH_PREPEND_IPv4
+      community.network.ce_config:
+        lines:
+        - #
+        - xpl ip-prefix-list PREFIX_PERMIT_CIDR_ISH_PREPEND_IPv4
+        - !PREFIX LIST FOR PERMIT IPv4 ISH
+        - 177.39.232.0 24,
+        - 177.39.233.0 24,
+        - 177.39.234.0 24,
+        - 177.39.235.0 24,
+        - 177.39.236.0 24,
+        - 177.39.237.0 24,
+        - 177.39.239.0 24
+        - end-list
+        - #
+        - return
+      when:
+      - inventory_hostname == 'R37-lab'
